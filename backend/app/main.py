@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from .schemas import SubjectIn, TeacherIn, RoomIn, SectionIn
 from .routers.crud import make_crud_router
+from .routers import schedules
 
 app = FastAPI(title="Class Scheduling API")
 
@@ -26,6 +27,8 @@ app.include_router(
                      ["grade_level", "section_name"]),
     prefix=API,
 )
+
+app.include_router(schedules.router, prefix=API)
 
 
 @app.get("/health")
