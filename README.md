@@ -1,3 +1,5 @@
+### BACKEND
+
 ### Install Virtual Environment
 ```
 python -m venv venv
@@ -11,4 +13,16 @@ python -m venv venv
 ### Run the Backend Folder
 ```
 uvicorn app.main:app --reload
+```
+
+### FRONTEND
+
+### Install Dependencies
+```
+npm install
+```
+
+### Run the Frontend Folder
+```
+npm run dev
 ```
