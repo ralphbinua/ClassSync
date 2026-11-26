@@ -7,3 +7,8 @@ python -m venv venv
 ```
 .venv\Scripts\Activate.ps1
 ```
+
+### Run the Backend Folder
+```
+uvicorn app.main:app --reload
+```
