@@ -1,7 +1,23 @@
+from .queries import JOIN, flatten, fetch_schedules
 from datetime import time
 from ..db import supabase
-from .queries import JOIN, flatten
 
+def scan_all_conflicts() -> list[dict]:
+    """Compare every pair of stored schedules and report any overlaps."""
+    rows = fetch_schedules()
+    found = []
+    for i, a in enumerate(rows):
+        for b in rows[i + 1:]:
+            if a["day"] != b["day"]:
+                continue
+            if not (a["start_time"] < b["end_time"] and a["end_time"] > b["start_time"]):
+                continue
+            for kind, key in (("teacher", "teacher_id"),
+                              ("room", "room_id"),
+                              ("section", "section_id")):
+                if a[key] == b[key]:
+                    found.append({"type": kind, "a": a, "b": b})
+    return found
 
 def _describe(kind: str, r: dict) -> str:
     who = {
