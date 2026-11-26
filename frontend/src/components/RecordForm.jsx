@@ -38,17 +38,35 @@ export default function RecordForm({ fields, initial, submitLabel, onSubmit, onC
             {f.label}
             {f.required && <span className="text-red-500"> *</span>}
           </label>
-          <input
-            id={f.name}
-            className={inputCls}
-            type={f.type ?? 'text'}
-            step={f.type === 'number' ? 'any' : undefined}
-            min={f.min}
-            required={f.required}
-            placeholder={f.placeholder}
-            value={values[f.name]}
-            onChange={(e) => change(f.name, e.target.value)}
-          />
+
+          {f.options ? (
+            <select
+              id={f.name}
+              className={inputCls}
+              required={f.required}
+              value={values[f.name]}
+              onChange={(e) => change(f.name, e.target.value)}
+            >
+              <option value="">— Select —</option>
+              {f.options.map((o) => (
+                <option key={o} value={o}>
+                  {o}
+                </option>
+              ))}
+            </select>
+          ) : (
+            <input
+              id={f.name}
+              className={inputCls}
+              type={f.type ?? 'text'}
+              step={f.type === 'number' ? 'any' : undefined}
+              min={f.min}
+              required={f.required}
+              placeholder={f.placeholder}
+              value={values[f.name]}
+              onChange={(e) => change(f.name, e.target.value)}
+            />
+          )}
         </div>
       ))}
 
