@@ -1,9 +1,19 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
+from .config import CORS_ORIGINS
 from .schemas import SubjectIn, TeacherIn, RoomIn, SectionIn
 from .routers.crud import make_crud_router
-from .routers import schedules
+from .routers import schedules, reports
 
 app = FastAPI(title="Class Scheduling API")
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=CORS_ORIGINS,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 API = "/api"
 
@@ -27,8 +37,8 @@ app.include_router(
                      ["grade_level", "section_name"]),
     prefix=API,
 )
-
 app.include_router(schedules.router, prefix=API)
+app.include_router(reports.router, prefix=API)
 
 
 @app.get("/health")
