@@ -1,0 +1,5 @@
+.venv
+.env
+pass.docs
+
+__pycache__
