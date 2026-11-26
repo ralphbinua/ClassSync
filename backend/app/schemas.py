@@ -1,5 +1,24 @@
-from pydantic import BaseModel, ConfigDict, Field
+from datetime import time
+from pydantic import BaseModel, ConfigDict, Field, model_validator
 
+class ScheduleIn(Base):
+    subject_id: int
+    teacher_id: int
+    room_id: int
+    section_id: int
+    day: int = Field(ge=1, le=7, description="1=Monday ... 7=Sunday")
+    start_time: time
+    end_time: time
+
+    @model_validator(mode="after")
+    def end_after_start(self):
+        if self.end_time <= self.start_time:
+            raise ValueError("end_time must be after start_time")
+        return self
+
+
+class ScheduleCheckIn(ScheduleIn):
+    exclude_id: int | None = None
 
 class Base(BaseModel):
     model_config = ConfigDict(str_strip_whitespace=True)
